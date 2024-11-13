@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sisik Jari Digital</title>
+    <style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#fingerprintCanvas {
+    border: 2px solid #000;
+    width: 300px;
+    height: 400px;
+    cursor: crosshair;
+}
+
+#clearButton {
+    margin-top: 10px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+     <div id="container">
+        <canvas id="fingerprintCanvas"></canvas>
+        <button id="clearButton">Bersihkan</button>
+    </div>
+
+    <script>
+ const canvas = document.getElementById('fingerprintCanvas');
+const ctx = canvas.getContext('2d');
+const clearButton = document.getElementById('clearButton');
+
+canvas.width = 300;
+canvas.height = 400;
+ctx.lineWidth = 2;
+ctx.lineCap = 'round';
+let isDrawing = false;
+
+const startDrawing = (e) => {
+    isDrawing = true;
+    ctx.beginPath();
+    ctx.moveTo(e.offsetX, e.offsetY);
+};
+
+const draw = (e) => {
+    if (!isDrawing) return;
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+};
+
+const stopDrawing = () => {
+    isDrawing = false;
+    ctx.closePath();
+};
+
+const clearCanvas = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+};
+
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('mouseout', stopDrawing);
+
+clearButton.addEventListener('click', clearCanvas);
+
+
+    </script>
+</body>
+</html>
